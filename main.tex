@@ -1,4 +1,5 @@
 \documentclass[12pt]{article}
+\hbadness=10
 
 \usepackage{amsmath, amssymb, amsfonts, setspace, stmaryrd, amsthm, graphicx, tikz}
 \usepackage[utf8]{inputenc}
@@ -8,7 +9,6 @@
 
 \usepackage[margin=1in]{geometry}
 \newtheorem{theorem}{Theorem}
-
 %%align* environment
 \newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
 
@@ -28,7 +28,6 @@
 \date{}
 
 \begin{document}
-
 \maketitle
 
 \section{Introduction}
@@ -40,19 +39,20 @@ To start out with, we define a \emph{graph} not as a relation between a domain a
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[]{abcd.png}
+\includegraphics[width=.25\linewidth]{abcd.png}
 \caption{A simple graph}
 \label{default}
 \end{center}
 \end{figure}
 
 We use letters in this depiction, but these could in general be numbers, names, etc. The vertices here are \emph{A}, \emph{B}, \emph{C}, and \emph{D}. The edges are \emph{AB}, \emph{BC}, \emph{CD}, \emph{AD}, and \emph{BD}. If two nodes share an edge, they are said to be \emph{adjacent}. When we list these vertices, the order is not important---\emph{BD} is the same edge as \emph{DB}---in general, this is not always true, but it is true for \emph{undirected} graphs, which are the ones we will study here. Notice also that nodes \emph{A} and \emph{C} are adjacent to two edges each--but \emph{B} and \emph{D} are each adjacent to two three edges. The number of edges adjacent to a particular node is called that node's \emph{degree} (so \emph{A} has degree 2, etc.)
-
+\\
+\\
 In the previous graph (Fig. 1), one would travel from node \emph{A} to each other node in the graph, through its edges. If this is true, the graph is said to be \emph{connected}. In the graph below (Fig. 2), the graph is disconnected, as \emph{F} and \emph{G} cannot be reached (through traveling via edges) from the rest of the graph.
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[]{disconnected.png}
+\includegraphics[width=.25\linewidth]{disconnected.png}
 \caption{A disconnected graph}
 \label{default}
 \end{center}
@@ -169,7 +169,7 @@ Now, with this tool, the problem is not so hard---the problem can be restated: a
 In order for there to be an Euler path (in which each edge is traversed exactly once) in a graph, that graph must be connected and have two or less vertices of odd degree. If we restrict the path to circuits (in which the path must end at the same point at which it starts), the graph must have exactly zero vertices of odd degree (and must be connected). Such a path is called an Euler circuit or Eulerian cycle.
 \end{theorem}
 \begin{exercise}
-Do the graphs from Excercise 2.1 have Euler paths? Euler circuits? Why or why not?
+Do the graphs from Excercise 2.1 have Euler paths? Euler circuits? Why or why not?\\
 {\bf 1.}
 \begin{tikzpicture}[>=triangle 45,font=\sffamily]
     \node (X) at (0,0) {x};
@@ -240,13 +240,17 @@ Can you draw the circuit/path if there is one? (Do so on the graph)
 \\
 \\
 \end{exercise}
+\\
 In the questions above, we asked you to draw the Euler circuits/paths without any prescribed method. For larger graphs, this is actually quite hard to do from guessing---however, there is a method known a \emph{Fleury's algorithm} for doing this (we skip this in favor of learning some more interesting things later, but when we input graphs into Mathematica, this is the method that the software uses).
 \subsection{Other Results from Graph Theory}
 Before we move onto programming with graphs, we discuss a few other results from graph theory. The first term we will define is a \emph{complete graph}, which is a graph in which each node is adjacent to every other node in the graph. Can you guess how many edges are in this graph?
 \\
+\\
 To start you off, there are $n$ nodes in the graph. How many edges do each of these nodes share? \underline{\hspace{2cm}}. After we account for the fact that this counts each node twice, we see that there are \underline{\hspace{3cm}} edges in the complete graph.
 \\
+\\
 The complete graph on $n$ nodes is often denoted by $K_n$. As we show below, $K_2$ is just an edge shared by two vertices, $K_3$ is a triangle, and $K_4$ is a rectangle with diagonals. These graphs have $2(2-1)/2=1$, $3(3-1)/2=3$, and $4(4-1)/2=6$ edges, as we show below.
+\\
 \\
 \begin{figure}[htbp]
 \begin{center}
@@ -359,8 +363,10 @@ In addition to compelte graphs, we have \emph{regular graphs}, graphs in which e
 \subsection{Computing with graphs in Mathematica}
 At this point, most of the tools we will learn are more relevant to larger graphs and data analysis, which makes paper computation difficult. Therefore, we're going to learn some basic graph computation in Mathematica. In this section, we cover how to input a graph, how to draw a graph, how to compute the degrees of a graph's vertices, and how to compute it's Euler circuits/paths.
 \\
+\\
 An \emph{edgelist} is the primary tool for graph data in mathematica. It is simply the list of edges in the graph. For example, an edgelist for $K_3$ would be $1-2$, $1-3$, $2-3$.
 To input this in Mathematica, we type "Graph[{1<->2,2<->3,1<->3}]". We may also explicitly list the vertices--say we want to input the previous graph, but also list a fourth vertex not connected to the other three. Then we could input "Graph[{1,2,3,4},{1<->2,2<->3,1<->3}]". In general, the format is "Graph[{$v_1,v_2,..v_n$},{$e_1,...,e_m$}]". We may also modify the edge and vertex colors, as well as list the vertex names i.e. "Graph[{1,2,3,4},{1<->2,2<->3,1<->3},VertexStyle->Green,EdgeStyle->Blue,VertexLabel->"Name"]". We could also use letters or names instead of numbers i.e. "Graph[{A<->Francesca, B<->Katrina,B<->A}]".
+\\
 \\
 We can save the triangle graph by inputting "g="Graph[{1,2,3,4},{1<->2,2<->3,1<->3}]". This allows us to get the degrees of each vertex by inputting "VertexDegree[g]".\\
 Mathematica 'knows' certain types of graphs--i.e. the octahedral graph, a 4-regular graph on 6 vertices. To find its Eulerian cycles, first type "g=GraphData["OctahedralGraph"];" and then "FindEulerianCycle[g]".
@@ -372,7 +378,7 @@ Mathematica 'knows' certain types of graphs--i.e. the octahedral graph, a 4-regu
 \\
 \\
 \\
-2. Construct the complete graph on $7$ vertices by inputting "g=Completegraph[7,VertexLabel$->$"Name"]". Find one of its Eulerian cyclces. To show the steps of the cycle, type "Table[HighlightGraph[G,Part[First[\%],1;;i]],{i,Length[First[\%]]}]". What is the first edge traversed?
+2. Construct the complete graph on $7$ vertices by inputting \\"g=Completegraph[7,VertexLabel$->$"Name"]". Find one of its Eulerian cyclces. To show the steps of the cycle, type "Table[HighlightGraph[G,Part[First[\%],1;;i]],{i,Length[First[\%]]}]". What is the first edge traversed?
 \\
 \\
 The last?
@@ -382,20 +388,27 @@ The last?
 \section{Network Theory}
 In the previous section, we presented a quick survey of classical graph theory. We hope this was interesting in its own right, but here we change our direction and shift more to the application-based study of graphs, which is often called \emph{network theory}. Most of the exercises for this section will be in mathematica, as the computations involved are relatively hard and sometimes require \emph{probabilistic calculations}.
 \subsection{Random Graphs}
-Thus far, we have considered regular and complete graphs---while these are new to you, they are relatively boring to the well-studied mathematician. Most network studies involve some variatio of \emph{random graphs}, which are graphs generated from probabilistic calculations. For example, a particular random graph might be generated by placement of $10$ edges at random between $8$ nodes, so that nodes $A$ and $B$ share an edge with the same probability as any other two nodes in the graph. This type of graph, in which $m$ edges are randomly placed between $n$ nodes, is called an Erdős-Renyí (E-R) graph, and is denoted by $G(n,m)$.
+Thus far, we have considered regular and complete graphs---while these are new to you, they are relatively boring to the well-studied mathematician. Most network studies involve some variation of \emph{random graphs}, which are graphs generated from probabilistic calculations. For example, a particular random graph might be generated by placement of $10$ edges at random between $8$ nodes, so that nodes $A$ and $B$ share an edge with the same probability as any other two nodes in the graph. This type of graph, in which $m$ edges are randomly placed between $n$ nodes, is called an Erdős-Renyí (ER) graph, and is denoted by $G(n,m)$. This is, by standards of network scientists, a very simple model---and so most applications make additional assumptions not present in ER graphs. However, there are some applications of ER graphs in their own right--for example, one might use an ER graph to study the spread of a contagion wherein a few people (nodes) are infected, and the disease spreads along the network edges.
 \\
-However, E-R graphs are really just the start of random graphs. Two other types of commonly used networks are referred to as the \emph{Barabási-Albert (BA) model} and the \emph{Watts Strogatz (WS) model}. \\Graphs of the BA type are generated from a 2-regular graph, adding $n$ nodes and $k$ vertcies at each step, but in such a way that the probability of an edge being added to a particular vertex is proportional to that vertex's degree at the step. This process creates a wide \emph{degree distribution}, such that some nodes have very high degrees while others have very low degrees---in particular, BA graphs have been shown to be good models for many applications. The most famous example of this is in internet linkages across the web---highly visited and linked to webpages will tend to get more and more traffic over time, so that yet more sites will link to them i.e. \emph{the rich get richer}. If a site is less linked to, then fewer visitors will see the site and link to it in the future. This creates the wide degree distribution seen in BA networks. Another example relevant to the BA model is the use of different food items in recipe databases (See Figure).
+\\
+However, ER graphs are really just the start of random graphs. Two other types of commonly used random networks are referred to as graphs from the \emph{Barabási-Albert (BA) model} and the \emph{Watts Strogatz (WS) model}. \\
+\\Graphs of the BA type are generated from a 2-regular graph, adding $n$ nodes and $k$ vertcies at each step, but in such a way that the probability of an edge being added to a particular vertex is proportional to that vertex's degree at the step. This process creates a wide \emph{degree distribution}, such that some nodes have very high degrees while others have very low degrees---in particular, BA graphs have been shown to be good models for many applications. The most famous example of this is in internet linkages across the web---highly visited and linked to webpages will tend to get more and more traffic over time, so that yet more sites will link to them i.e. \emph{the rich get richer}. If a site is less linked to, then fewer visitors will see the site and link to it in the future. This creates the wide degree distribution seen in BA networks. Another example relevant to the BA model is the use of different food items in recipe databases (See Figure \ref{food}).\\
+\\
+We won't cover the WS model here, but feel free to plot it in mathematica to get an idea of what kind of graphs it creates if you like.
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[]{foodnet.png}
 \caption{The size of each node represents how many recipes it is given in, while the thickness of an edge between two nodes represents the number of recipes featuring the two adjacent nodes together (Figure from blog: ScienceandFood).}
-\label{default}
+\label{food}
 \end{center}
 \end{figure}
  
 
 \begin{exercise}
-1. Create an Erdős-Renyí graph of $20$ edges on $18$ nodes $G(18,20)$ in Mathematica by inputting "g1=RandomGraph[{18,20}]". Draw your graph here, and compare with someone around you.
+1. Create an Erdős-Renyí graph of $20$ edges on $18$ nodes $G(18,20)$ in Mathematica by inputting "g1=RandomGraph[\{18,20\}]". Draw your graph here, and compare with someone around you.
+\\
+\\
+\\
 \\
 \\
 \\
@@ -413,17 +426,26 @@ However, E-R graphs are really just the start of random graphs. Two other types 
 \\
 \\
 \\
-4. Construct a BA graph on $10$ vertices by inputting  "g2=RandomGraph[BarabasiAlbertGraphDistribution[10,2]]". How does this compare in your own words to the random graph from question 1.
+4. Also, construct a graph $g2$ on $G(18,5)$. Supposing this graph and  $g1$ were infection networks wherein node 5 represented an infected person, and disease was transmitted along edges, how many nodes would be infected in each graph? Which indicates a 'safer' network in this context?
+\\
+\\
+\\
+\\
+5. Construct a BA graph on $10$ vertices by inputting \\ "g3=RandomGraph[BarabasiAlbertGraphDistribution[10,3]]". How does this compare in your own words to the random graph $g1$?
+\\
 \\
 \\
 \\
 \\
 \\
 \end{exercise}
+\\
 We can give better illustration of the \emph{degree distributions} by showing them in plot form. This is a bit advanced for those who have not had a statistics course, but hopefully we can teach you what these plots mean. Look at Figure .  The horizontal axes represent the degree $d$. See that this varies between and. The vertical axis represent the \emph{Probability of having degree d}. You can see that one either plot, there is a high probability that a node has degree $d=$, but this is much higher on the right plot.
 \subsection{Other Network Properties: Centrality and Clustering Coefficient}
-We have already seen several important properties in action---the number of components tells us 'how many pieces' a network comes in. The mean degree tell us how densely connected a network is. And the degree distribution gives us an idea of the variation within the network. A different kind of property, called \emph{centrality}, tells us about the relative importance of each node within its network.\\
+We have already seen several important network properties in action---the number of components tells us 'how many pieces' a network comes in. The mean degree tell us how densely connected a network is. And the degree distribution gives us an idea of the variation within the network. A different kind of property, called \emph{centrality}, tells us about the relative importance of each node within its network.\\
+\\
 The first kind of centrality is very simple and intuitive. A node's \emph{Degree Centrality} is simply the degree of that node $d$, divided by  its maximum possible degree, which is $m-1$, where $m$ is the number of edges in the network. A high degree node is usually an important player in the network--for example, garlic's use in the food network above has a high degree because it is used frequently in lots of networks. In friendship networks, the most popular units have the highest degrees, etc.\\
+\\
 Now, to get an idea of the second type of centrality, think of Washington DC's subway system (or any other city's subway system). There are certain stops that several lines go through, and consequentially many passengers on different lines go through these stops (see Figure \ref{subway}). A node's \emph{Betweenness centrality} captures this, by taking into account how many shortest paths between different nodes in the network pass through the node of interest. 
 \begin{figure}[htbp]
 \begin{center}
@@ -432,9 +454,10 @@ Now, to get an idea of the second type of centrality, think of Washington DC's s
 \label{subway}
 \end{center}
 \end{figure}
-
+\\
 Unfortunately, this calculation is much longer and more complicated. For a connected network, it is defined as the number of shortest paths passing through the node, divided by the total number of shortest paths in the network, \emph{taking into account every pair of nodes in the network.} We will calculate this for one small network, and then let mathematica take it from there. \\
-Examine Figure \ref{bw}, and consider node $1$--what shortest paths pass through it? Well, a shortest path from 2 to 5 passes through it (2-1-5), and this is the only shortest path from 2 to 5--this contributes $1/1=1$ to the calculation.. The same can be said for 3 to 5. As well, both paths from 4 to 5 pass through 1 (the 'top' way 5-1-3-4 and the bottom way 5-1-2-4), and this also contributes $2/2=1$. How about shortest paths form $2$ to $3$? One (2-1-3) of these goes through $1$ while the other goes through $4$ (2-1-4), so this contributes $1/2$ to the calculation.. Do any paths from 3 to 2 pass through it? No--therefore, we've considered all pairs of nodes and the shortest paths passing through $1.$ Adding up the contributions we found, we get $1+1+1+1/2=3.5$. Now we divide this by the number of pairs in the graph which exclude $1$---there are six of these (5-3,5-2,5-4,2-3,2-4,3-4), and find that the betweenness centrality of $1$ is $3.5/6=0.58$.
+\\
+Examine Figure 6, and consider node $1$--what shortest paths pass through it? Well, a shortest path from 2 to 5 passes through it (2-1-5), and this is the only shortest path from 2 to 5--this contributes $1/1=1$ to the calculation.. The same can be said for 3 to 5. As well, both paths from 4 to 5 pass through 1 (the 'top' way 5-1-3-4 and the bottom way 5-1-2-4), and this also contributes $2/2=1$. How about shortest paths form $2$ to $3$? One (2-1-3) of these goes through $1$ while the other goes through $4$ (2-1-4), so this contributes $1/2$ to the calculation.. Do any paths from 3 to 2 pass through it? No--therefore, we've considered all pairs of nodes and the shortest paths passing through $1.$ Adding up the contributions we found, we get $1+1+1+1/2=3.5$. Now we divide this by the number of pairs in the graph which exclude $1$---there are six of these (5-3,5-2,5-4,2-3,2-4,3-4), and find that the betweenness centrality of $1$ is $3.5/6=0.58$.
 \begin{figure}[htbp]
 \begin{center}
 \begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=4cm,
@@ -460,7 +483,7 @@ Examine Figure \ref{bw}, and consider node $1$--what shortest paths pass through
 \end{center}
 \end{figure}
 There are \emph{many} other types of centrality, but only so little time (and many of these methods require exposure to math that most of you have probably not yet learned)---indeed, Google uses a variant of something called 'eigenvector centrality' to rank the results of our web searches. However, these two kinds of centrality we've covered are among the most important and will suffice for our study.
-\begin{exercise}
+\begin{exercise}\\
 1. Consider the graph below. Which node(s) have the highest degree centrality? Which do think has/have the highest betweenness centrality?
 
 \includegraphics[width=.6\linewidth]{BC}
@@ -469,7 +492,7 @@ There are \emph{many} other types of centrality, but only so little time (and ma
 \\
 \\
 \\
-3. Plot the degree distribution...Does it look more like a graph from the ER model or a graph from the BA model?
+3. Plot the degree distribution (don't bother drawing here)...Does it look more like a graph from the ER model or a graph from the BA model?
 \\
 \\
 \\
@@ -484,6 +507,58 @@ The last thing we will learn about here is community detection in graphs. Often,
 \label{crime}
 \end{center}
 \end{figure}
-\\Often, community organization is easy to see in data. But some networks have millions (or more) of nodes and edges---even in smaller networks, community organization may be difficult to see if the graph layout is poor. Indeed, community detection is a very active area of research, particularly here at UNC. One method is \emph{modularity}-based community detection. Like algorithms, this method relies upon optimizing (trying to increase) the output of a particular function. Intuitively, this function represents \emph{how well a certain community structure fits the given data.} 
-\\In mathematica, input "g=ExampleData[\{"NetworkGraph","ZacharyKarateClub"\}]"---this data (frequently used in the community detection literature) represents a social network wherein nodes represent people and edges represent friendships within a karate club. Now input "FindGraphCommunities[g,Method$->$"Modularity"]" and then "HighlightGraph[g,Subgraph[g,\#]\&/@\%,GraphHighlightStyle$->$"DehighlightHide"]" to see the communities in this network.
+\\
+\\Often, community organization is easy to see in some data---communities occur when some nodes have more edges between them than others. But some networks have millions (or more) of nodes and edges---even in smaller networks, community organization may be difficult to see if the graph layout is poor. For example, see Figure \ref{badcomm}. The left and right communities (purple and blue) seem randomly chosen, and furthermore the graph seems like it may just be an ER graph. However, with a different layout, we see that the graph is actually quite \emph{modular} (it has well defined communities). Can you guess what the layout would be that maximizes the community structure? \\
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.8\linewidth]{badcommunities}
+\caption{If we choose the communities as so (the blue and purple being the two communities), the community assignment tells us nothing.}
+\label{badcomm}
+\end{center}
+\end{figure}
+\\
+Without any prior experience or tools, this may not be straightforward even in this simple graph. A proxy for 'good community structure' is looking for a community assignment such that there are few edges between (not within) the different communities--looking at Figure \ref{badcomm}, this would mean most of the edges should be within the two circles, not between them. This happens if we group together A, B, C, D and I into group, and E, F, G, H, and K into the other.\\
+\emph{Redraw the graph with these assignments here. Circle you communities as in Figure \ref{badcomm}, with A, B, C, D, and I on the left and E, F, G, H, and K on the right.}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+Indeed, community detection is a very active area of research, particularly here at UNC. One method is \emph{modularity}-based community detection. Like many algorithms, this method relies upon optimizing (trying to increase) the output of a particular function. Intuitively, this function represents \emph{how well a certain community structure fits the given data}---more specifically, modularity is defined as the \emph{fraction of edges falling within (not between) communities, minus what would be expected in a random graph}.  In favor of doing some applications, we won't derive the actual modularity function itself. Mathematica can calculate the communities by optimizing this function for us.\\
+\\In mathematica, input "g=ExampleData[\{"NetworkGraph","ZacharyKarateClub"\}]"---this data (frequently used in the community detection literature) represents a social network wherein nodes represent people and edges represent friendships within a karate club. Now input "FindGraphCommunities[g,Method$->$"Modularity"]" and then \\"HighlightGraph[g,Subgraph[g,\#]\&/@\%,GraphHighlightStyle$->$"DehighlightHide"]" to see the communities in this network.\\ If this doesn't work, try "CommunityGraphPlot[\%,FindGraphCommunities[\%]]".\\
+\begin{exercise}
+Dolphins, like humans, are social animals, and animal behaviorists frequently study how they interact---as this has great implications to preserving their populations and those of other species. There is a great data set on the internet showcasing these studies---in the form of a simple network wherein there is an edge between two nodes (dolphins) if they frequently interact. We will investigate this network here.\\
+\\First, download the data set 'dolphins.gml' at http://networkdata.ics.uci.edu/data/dolphins/
+\\Now, import the data by typing into mathematica "dolphins=Import["/pathtofile/dolphins.gml",VertexLabels=Names]" (pathtofile is the path to the directory in which the file is located---you may need to ask the instructor for help with this).
+\\1.Now, find the communities and visualize them, using the methods described above. How many are there?\\
+\\2.What is the mean size of a community in this network?
+\\
+\\
+3. Can you say anything else about the community structure of dolphin social networks?
+\\
+\\
+\\
+\\
+\\4. Suppose there was a conflict among the different communities, such that dolphins stopped interacting with dolphins of other communities. You can show what happens in this case by inputting: \\"HighlightGraph[dolphins,Subgraph[dolphins,\#]\&/\@\%,GraphHighlightStyle$\rightarrow$"DehighlightHide"]". Describe what happens, and interpret this in terms of the dolphin social network.\\
+\\
+\\
+\\
+\\
+\\
+5. Are any nodes more central than others (using degree or betweenness centrality)? What would this mean in terms of animal behavior?
+\\
+\\
+\\
+\\
+\\6. Plot the degree distributions. Does the graph resemble a BA network, an ER network, or neither?
+\\
+\\
+\\ 
+
+\end{exercise}
 \end{document}
